@@ -36,5 +36,14 @@ def install_docker_compose(version='1.29.2'):
     os.system('sudo chmod +x /usr/local/bin/docker-compose')
 
 
-if __name__ == '__main__':
-    install()
+def install_nvidia_cuda_toolkit():
+    """
+    Run to install nvidia cuda toolkit.
+    This allows the use of gpus inside of docker container.
+    """
+    os.system('distribution=$(. /etc/os-release;echo $ID$VERSION_ID) \
+   && curl -s -L https://nvidia.github.io/nvidia-docker/gpgkey | sudo apt-key add - \
+   && curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.list | sudo tee /etc/apt/sources.list.d/nvidia-docker.list')
+    os.system('sudo apt-get update')
+    os.system('sudo apt-get install -y nvidia-docker2')
+    os.system('sudo systemctl restart docker')
